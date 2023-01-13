@@ -7,12 +7,14 @@ const app = Vue.createApp({
     data() {
         return {
             playerHealth: 100,
-            monsterHealth: 100
+            monsterHealth: 100,
+            currentRound: 0
         };
     },
     methods: {
         attackMonster() {
             // get a random value for how much damage the player deals
+            this.currentRound++;
             let damageDealt = getRandomValue();
             this.monsterHealth -= damageDealt;
             this.attackPlayer();    // monster strikes back
@@ -23,8 +25,12 @@ const app = Vue.createApp({
             this.playerHealth -= damageDealt;
         },
 
-        debugPrint() {
-            console.log(this.monsterHealth)
+        specialAttack() {
+            // the player can deal a special attack every 3 rounds
+            this.currentRound++;
+            let attackValue = getRandomValue(12, 25);
+            this.monsterHealth -= attackValue;
+            this.attackPlayer(); // monster strikes back
         }
     },
     computed: {
@@ -36,6 +42,9 @@ const app = Vue.createApp({
         },
         playerBarStyles() {
             return {width: this.playerHealth + '%'}
+        },
+        mayUseSpecialAttack() {
+            return this.currentRound % 3 !== 0
         }
     },
     watch: {
