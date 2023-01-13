@@ -1,4 +1,4 @@
-// computed props: -> functions returning the value for a prop that depends on other props
+// computed props: -> functions returning the value of props which depend on other props
 function getRandomValue() {
     return Math.floor(Math.random() * (12 - 5)) + 5;
 }
@@ -30,6 +30,12 @@ const app = Vue.createApp({
     computed: {
         battleWon() {
             return (this.monsterHealth <= 0 && this.playerHealth >= 0) ? "Player Won" : "Still Fighting"
+        },
+        monsterBarStyles() {
+            return {width: this.monsterHealth + '%'}
+        },
+        playerBarStyles() {
+            return {width: this.playerHealth + '%'}
         }
     },
     watch: {
