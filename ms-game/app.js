@@ -10,7 +10,8 @@ const app = Vue.createApp({
             playerHealth: 100,
             monsterHealth: 100,
             currentRound: 0,
-            winner: null
+            winner: null,
+            logMessages: []
         };
     },
     methods: {
@@ -20,18 +21,21 @@ const app = Vue.createApp({
             this.monsterHealth = 100;
             this.playerHealth = 100;
             this.winner = null
+            this.logMessages = []
         },
         attackMonster() {
             // get a random value for how much damage the player deals
             this.currentRound++;
             let damageDealt = getRandomValue();
             this.monsterHealth -= damageDealt;
+            this.addLogMessage('player', 'attack', damageDealt)
             this.attackPlayer();    // monster strikes back
         },
 
         attackPlayer() {
             let damageDealt = getRandomValue();
             this.playerHealth -= damageDealt;
+            this.addLogMessage('monster', 'attack', damageDealt)
         },
 
         specialAttack() {
@@ -39,6 +43,7 @@ const app = Vue.createApp({
             this.currentRound++;
             let attackValue = getRandomValue(12, 25);
             this.monsterHealth -= attackValue;
+            this.addLogMessage('player', 'special attack', attackValue)
             this.attackPlayer(); // monster strikes back
         },
         healPlayer() {
@@ -49,10 +54,20 @@ const app = Vue.createApp({
             } else {
                 this.playerHealth = 100;
             }
+            this.addLogMessage('player', 'heal', healValue)
             this.attackPlayer();
         },
         surrender() {
             this.playerHealth = 0;
+        },
+        addLogMessage(who, what, value) {
+            // add to the beginning of the array
+            this.logMessages.unshift({
+                actionBy: who,
+                actionWhat: what,
+                actionValue: value
+            })
+            console.log(this.logMessages)
         }
     },
     computed: {
