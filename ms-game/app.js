@@ -14,6 +14,13 @@ const app = Vue.createApp({
         };
     },
     methods: {
+        startNewGame() {
+            // reset all vars
+            this.currentRound = 0;
+            this.monsterHealth = 100;
+            this.playerHealth = 100;
+            this.winner = null
+        },
         attackMonster() {
             // get a random value for how much damage the player deals
             this.currentRound++;
@@ -43,6 +50,9 @@ const app = Vue.createApp({
                 this.playerHealth = 100;
             }
             this.attackPlayer();
+        },
+        surrender() {
+            this.playerHealth = 0;
         }
     },
     computed: {
